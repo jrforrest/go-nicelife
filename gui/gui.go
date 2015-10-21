@@ -4,8 +4,6 @@ import . "lifegame/simthread"
 import . "lifegame/pos"
 import "github.com/veandco/go-sdl2/sdl"
 
-import "fmt"
-
 type Gui struct {
 	simThread   *SimThread
 	sdlWindow   *sdl.Window
@@ -47,6 +45,8 @@ func (gui *Gui) Start() {
 	gui.sdlWindow = window
 	gui.sdlSurface = surface
 
+	go gui.watchClick()
+
 	gui.mainLoop()
 	sdl.Quit()
 }
@@ -70,7 +70,6 @@ func (gui *Gui) RenderSim(positions []Position) {
 }
 
 func (gui *Gui) renderLiveCells(positions []Position) {
-	fmt.Printf("Drawing cells: %v\n", positions)
 	for _, pos := range positions {
 		if (pos.X >= 0 && pos.X < gui.nCellsHoriz) && (pos.Y >= 0 && pos.Y < gui.nCellsVert) {
 			gui.drawCellRect(pos.X, pos.Y, 0xff0000ff)
@@ -106,4 +105,21 @@ func (gui *Gui) cellSizes() (int, int) {
 	horiz := (gui.pxWidth - 4*gui.nCellsHoriz) / gui.nCellsHoriz
 	vert := (gui.pxHeight - 4*gui.nCellsVert) / gui.nCellsVert
 	return horiz, vert
+}
+
+func (gui *Gui) watchClick() {
+	for true {
+		horiz, vert := gui.cellSizes()
+
+		ev := sdl.WaitEvent()
+		switch ev := ev.(type) {
+		case *sdl.MouseButtonEvent:
+			if ev.Type == sdl.MOUSEBUTTONDOWN {
+				cellX := int(ev.X) / horiz
+				cellY := int(ev.Y) / vert
+				gui.simThread.SpawnCell(cellX, cellY)
+			}
+		default:
+		}
+	}
 }
