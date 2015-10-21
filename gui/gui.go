@@ -64,6 +64,7 @@ func (gui *Gui) mainLoop() {
 
 // Renders the current state of the simulation
 func (gui *Gui) RenderSim(positions []Position) {
+	gui.renderBackground()
 	gui.renderBackgroundGrid()
 	gui.renderLiveCells(positions)
 	gui.sdlWindow.UpdateSurface()
@@ -75,6 +76,10 @@ func (gui *Gui) renderLiveCells(positions []Position) {
 			gui.drawCellRect(pos.X, pos.Y, 0xff0000ff)
 		}
 	}
+}
+
+func (gui *Gui) renderBackground() {
+	gui.drawRect(0, 0, int32(gui.pxWidth), int32(gui.pxHeight), 0xff333333)
 }
 
 func (gui *Gui) renderBackgroundGrid() {
