@@ -19,8 +19,8 @@ func NewGui(simThread *SimThread) *Gui {
 		simThread:   simThread,
 		pxHeight:    600,
 		pxWidth:     800,
-		nCellsHoriz: 10,
-		nCellsVert:  10,
+		nCellsHoriz: 50,
+		nCellsVert:  50,
 	}
 }
 
@@ -73,7 +73,7 @@ func (gui *Gui) RenderSim(positions []Position) {
 func (gui *Gui) renderLiveCells(positions []Position) {
 	for _, pos := range positions {
 		if (pos.X >= 0 && pos.X < gui.nCellsHoriz) && (pos.Y >= 0 && pos.Y < gui.nCellsVert) {
-			gui.drawCellRect(pos.X, pos.Y, 0xff0000ff)
+			gui.drawCellRect(pos.X, pos.Y, randomCellColor())
 		}
 	}
 }
@@ -85,7 +85,7 @@ func (gui *Gui) renderBackground() {
 func (gui *Gui) renderBackgroundGrid() {
 	for x := 0; x <= gui.nCellsHoriz; x++ {
 		for y := 0; y <= gui.nCellsVert; y++ {
-			gui.drawCellRect(x, y, 0xff00ff00)
+			gui.drawCellRect(x, y, 0xff666666)
 		}
 	}
 }
