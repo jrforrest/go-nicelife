@@ -19,8 +19,8 @@ func NewGui(simThread *SimThread) *Gui {
 		simThread:   simThread,
 		pxHeight:    600,
 		pxWidth:     800,
-		nCellsHoriz: 50,
-		nCellsVert:  50,
+		nCellsHoriz: 100,
+		nCellsVert:  100,
 	}
 }
 
@@ -78,9 +78,20 @@ func (gui *Gui) renderBackground() {
 }
 
 func (gui *Gui) renderBackgroundGrid() {
+	odd := true
+	var color uint32
+
 	for x := 0; x <= gui.nCellsHoriz; x++ {
 		for y := 0; y <= gui.nCellsVert; y++ {
-			gui.drawCellRect(x, y, 0xff666666)
+			if odd {
+				color = 0xff111111
+				odd = false
+			} else {
+				color = 0xff141414
+				odd = true
+			}
+
+			gui.drawCellRect(x, y, color)
 		}
 	}
 }
@@ -88,8 +99,8 @@ func (gui *Gui) renderBackgroundGrid() {
 func (gui *Gui) drawCellRect(x int, y int, color uint32) {
 	width, height := gui.cellSizes()
 	gui.drawRect(
-		int32(x*(width+4)),
-		int32(y*(height+4)),
+		int32(x*(width)),
+		int32(y*(height)),
 		int32(width),
 		int32(height),
 		color)
@@ -102,8 +113,8 @@ func (gui *Gui) drawRect(x int32, y int32, width int32, height int32, color uint
 
 // Cell sizes in pixels for horiz and vert rendering
 func (gui *Gui) cellSizes() (int, int) {
-	horiz := (gui.pxWidth - 4*gui.nCellsHoriz) / gui.nCellsHoriz
-	vert := (gui.pxHeight - 4*gui.nCellsVert) / gui.nCellsVert
+	horiz := gui.pxWidth / gui.nCellsHoriz
+	vert := gui.pxHeight / gui.nCellsVert
 	return horiz, vert
 }
 
@@ -119,7 +130,6 @@ func (gui *Gui) watchClick() {
 				cellY := int(ev.Y) / vert
 				gui.simThread.SpawnCell(cellX, cellY)
 			}
-		default:
 		}
 	}
 }
