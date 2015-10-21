@@ -24,6 +24,10 @@ func Run() *SimThread {
 	return &thread
 }
 
+func (thread *SimThread) SpawnCell(x int, y int) {
+	thread.MoveIn <- Position{X: x, Y: y}
+}
+
 func (thread *SimThread) start() {
 
 	for true {

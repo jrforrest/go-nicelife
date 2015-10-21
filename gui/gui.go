@@ -1,12 +1,13 @@
 package gui
 
-import . "lifegame/sim"
+import . "lifegame/simthread"
+import . "lifegame/pos"
 import "github.com/veandco/go-sdl2/sdl"
 
 import "fmt"
 
 type Gui struct {
-	sim         *Simulation
+	simThread   *SimThread
 	sdlWindow   *sdl.Window
 	sdlSurface  *sdl.Surface
 	pxHeight    int
@@ -15,9 +16,9 @@ type Gui struct {
 	nCellsVert  int
 }
 
-func NewGui(sim *Simulation) *Gui {
+func NewGui(simThread *SimThread) *Gui {
 	return &Gui{
-		sim:         sim,
+		simThread:   simThread,
 		pxHeight:    600,
 		pxWidth:     800,
 		nCellsHoriz: 10,
@@ -53,22 +54,24 @@ func (gui *Gui) Start() {
 func (gui *Gui) mainLoop() {
 	running := true
 	for running {
-		gui.sim.Step()
-		sdl.Delay(1000)
-		gui.RenderSim()
+		select {
+		case state := <-gui.simThread.StateOut:
+			gui.RenderSim(state)
+		default:
+		}
 	}
 }
 
 // Renders the current state of the simulation
-func (gui *Gui) RenderSim() {
+func (gui *Gui) RenderSim(positions []Position) {
 	gui.renderBackgroundGrid()
-	gui.renderLiveCells()
+	gui.renderLiveCells(positions)
 	gui.sdlWindow.UpdateSurface()
 }
 
-func (gui *Gui) renderLiveCells() {
-	fmt.Printf("Drawing cells: %v\n", gui.sim.LiveCellPositions())
-	for _, pos := range gui.sim.LiveCellPositions() {
+func (gui *Gui) renderLiveCells(positions []Position) {
+	fmt.Printf("Drawing cells: %v\n", positions)
+	for _, pos := range positions {
 		if (pos.X >= 0 && pos.X < gui.nCellsHoriz) && (pos.Y >= 0 && pos.Y < gui.nCellsVert) {
 			gui.drawCellRect(pos.X, pos.Y, 0xff0000ff)
 		}

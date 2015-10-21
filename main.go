@@ -1,20 +1,21 @@
 package main
 
-import . "lifegame/sim"
+import "lifegame/simthread"
 import . "lifegame/gui"
 
-func main() {
-	sim := NewSimulation()
+func initSim(sim *simthread.SimThread) {
 	sim.SpawnCell(1, 1)
+	sim.SpawnCell(0, 1)
+	sim.SpawnCell(2, 1)
+	sim.SpawnCell(2, 0)
 	sim.SpawnCell(1, 0)
-	sim.SpawnCell(1, 2)
-	sim.SpawnCell(2, 2)
-	sim.SpawnCell(4, 2)
-	sim.SpawnCell(5, 1)
-	sim.SpawnCell(6, 3)
-	sim.SpawnCell(7, 3)
-	sim.SpawnCell(5, 2)
-	gui := NewGui(&sim)
+}
+
+func main() {
+	sim := simthread.Run()
+	gui := NewGui(sim)
+
+	go initSim(sim)
 
 	gui.Start()
 }
