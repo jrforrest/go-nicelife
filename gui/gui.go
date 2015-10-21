@@ -52,13 +52,8 @@ func (gui *Gui) Start() {
 }
 
 func (gui *Gui) mainLoop() {
-	running := true
-	for running {
-		select {
-		case state := <-gui.simThread.StateOut:
-			gui.RenderSim(state)
-		default:
-		}
+	for state := range gui.simThread.StateOut {
+		gui.RenderSim(state)
 	}
 }
 
