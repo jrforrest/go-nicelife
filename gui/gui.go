@@ -4,6 +4,13 @@ import . "lifegame/simthread"
 import . "lifegame/pos"
 import "github.com/veandco/go-sdl2/sdl"
 
+type Cmd int
+
+const (
+	TOGGLE_FULLSCREEN Cmd = iota
+	EXIT
+)
+
 type Gui struct {
 	simThread   *SimThread
 	sdlWindow   *sdl.Window
@@ -12,6 +19,8 @@ type Gui struct {
 	pxWidth     int
 	nCellsHoriz int
 	nCellsVert  int
+	fullscreen  bool
+	chCmd       chan Cmd //Commands from input handler to main loop
 }
 
 func NewGui(simThread *SimThread) *Gui {
@@ -21,6 +30,7 @@ func NewGui(simThread *SimThread) *Gui {
 		pxWidth:     800,
 		nCellsHoriz: 100,
 		nCellsVert:  100,
+		chCmd:       make(chan Cmd),
 	}
 }
 
@@ -52,8 +62,20 @@ func (gui *Gui) Start() {
 }
 
 func (gui *Gui) mainLoop() {
-	for state := range gui.simThread.StateOut {
-		gui.RenderSim(state)
+	for true {
+		select {
+		case state := <-gui.simThread.StateOut:
+			gui.RenderSim(state)
+		case cmd := <-gui.chCmd:
+			gui.handleCmd(cmd)
+		}
+	}
+}
+
+func (gui *Gui) handleCmd(cmd Cmd) {
+	switch cmd {
+	case TOGGLE_FULLSCREEN:
+		gui.toggleFullScreen()
 	}
 }
 
@@ -75,6 +97,16 @@ func (gui *Gui) renderLiveCells(positions []Position) {
 
 func (gui *Gui) renderBackground() {
 	gui.drawRect(0, 0, int32(gui.pxWidth), int32(gui.pxHeight), 0xff333333)
+}
+
+func (gui *Gui) toggleFullScreen() {
+	if !gui.fullscreen {
+		gui.sdlWindow.SetFullscreen(sdl.WINDOW_FULLSCREEN)
+		gui.fullscreen = true
+	} else {
+		gui.fullscreen = false
+		gui.sdlWindow.SetFullscreen(sdl.WINDOW_RESIZABLE)
+	}
 }
 
 func (gui *Gui) renderBackgroundGrid() {
@@ -129,6 +161,12 @@ func (gui *Gui) watchClick() {
 				cellX := int(ev.X) / horiz
 				cellY := int(ev.Y) / vert
 				gui.simThread.SpawnCell(cellX, cellY)
+			}
+		case *sdl.KeyDownEvent:
+			sym := ev.Keysym.Sym
+			name := sdl.GetKeyName(sym)
+			if ev.Type == sdl.KEYDOWN && name == "F" {
+				gui.chCmd <- TOGGLE_FULLSCREEN
 			}
 		}
 	}
