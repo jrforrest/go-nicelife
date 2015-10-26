@@ -71,6 +71,8 @@ func (gui *Gui) handleCmd(cmd Cmd) {
 		gui.toggleFullScreen()
 	case MoveCamera:
 		gui.cam.move(cmd.Direction, 10)
+	case Zoom:
+		gui.cam.zoom(cmd.Direction, 10)
 	}
 	gui.updateDisplay()
 }

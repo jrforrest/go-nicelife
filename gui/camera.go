@@ -3,13 +3,6 @@ package gui
 import . "lifegame/pos"
 import . "lifegame/gui/cmd"
 
-type zoomDirection int
-
-const (
-	IN zoomDirection = iota
-	OUT
-)
-
 type camera struct {
 	x           int
 	y           int
@@ -48,7 +41,15 @@ func (cam *camera) move(dir Direction, dist int) {
 }
 
 // dist is just the number of cells to add to the scene in both directions
-func (cam *camera) zoom(dir zoomDirection, dist int) {
+func (cam *camera) zoom(dir Direction, dist int) {
+	switch dir {
+	case IN:
+	case OUT:
+		dist = -dist
+	default:
+		panic("Unknown zoom direction!")
+	}
+
 	newHoriz := cam.nCellsHoriz + dist
 	newVert := cam.nCellsVert + dist
 

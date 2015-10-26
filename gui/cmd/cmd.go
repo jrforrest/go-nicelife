@@ -7,6 +7,9 @@ type ToggleFullscreen struct{}
 type MoveCamera struct {
 	Direction Direction
 }
+type Zoom struct {
+	Direction Direction
+}
 
 type Direction int
 
@@ -15,4 +18,6 @@ const (
 	DOWN
 	LEFT
 	RIGHT
+	IN
+	OUT
 )

@@ -40,5 +40,9 @@ func (gui *Gui) handleKeyDown(ev *sdl.KeyDownEvent) {
 		gui.chCmd <- MoveCamera{Direction: DOWN}
 	case "D":
 		gui.chCmd <- MoveCamera{Direction: RIGHT}
+	case "J":
+		gui.chCmd <- Zoom{Direction: IN}
+	case "K":
+		gui.chCmd <- Zoom{Direction: OUT}
 	}
 }
