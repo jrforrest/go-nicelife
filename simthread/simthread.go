@@ -1,7 +1,7 @@
 package simthread
 
-import . "lifegame/sim"
-import . "lifegame/pos"
+import . "github.com/jrforrest/go-nicelife/sim"
+import . "github.com/jrforrest/go-nicelife/pos"
 import "time"
 
 type SimThread struct {

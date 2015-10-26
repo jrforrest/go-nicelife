@@ -1,8 +1,8 @@
 package gui
 
-import . "lifegame/simthread"
-import . "lifegame/pos"
-import . "lifegame/gui/cmd"
+import . "github.com/jrforrest/go-nicelife/simthread"
+import . "github.com/jrforrest/go-nicelife/pos"
+import . "github.com/jrforrest/go-nicelife/gui/cmd"
 import "github.com/veandco/go-sdl2/sdl"
 
 type Gui struct {
@@ -29,7 +29,7 @@ func NewGui(simThread *SimThread) *Gui {
 
 func (gui *Gui) Start() {
 	window, err := sdl.CreateWindow(
-		"lifegame",
+		"nice life",
 		sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED,
 		gui.cam.width,

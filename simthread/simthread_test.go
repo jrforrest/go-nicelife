@@ -2,7 +2,7 @@ package simthread
 
 import "testing"
 
-import . "lifegame/pos"
+import . "github.com/jrforrest/go-nicelife/pos"
 
 func TestSimThreadRun(t *testing.T) {
 	thread := Run()

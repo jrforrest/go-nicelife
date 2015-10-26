@@ -1,7 +1,7 @@
 package main
 
-import "lifegame/simthread"
-import . "lifegame/gui"
+import "github.com/jrforrest/go-nicelife/simthread"
+import . "github.com/jrforrest/go-nicelife/gui"
 
 func initSim(sim *simthread.SimThread) {
 	sim.SpawnCell(1, 1)

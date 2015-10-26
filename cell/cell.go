@@ -1,6 +1,6 @@
 package cell
 
-import . "lifegame/pos"
+import . "github.com/jrforrest/go-nicelife/pos"
 
 type Cell struct {
 	Position

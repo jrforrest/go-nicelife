@@ -1,7 +1,7 @@
 package sim
 
-import . "lifegame/cell"
-import . "lifegame/pos"
+import . "github.com/jrforrest/go-nicelife/cell"
+import . "github.com/jrforrest/go-nicelife/pos"
 
 type Simulation struct {
 	cells    map[Position]Cell // The cells in the current sim state
@@ -15,7 +15,7 @@ func NewSimulation() Simulation {
 	}
 }
 
-// Steps the lifegame simulation to the next frame
+// Steps the simulation to the next frame
 func (sim *Simulation) Step() {
 	for _, cell := range sim.cells {
 		if !sim.cellLives(cell) {

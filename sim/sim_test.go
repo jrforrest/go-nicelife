@@ -1,8 +1,8 @@
 package sim
 
 import "testing"
-import . "lifegame/pos"
-import . "lifegame/cell"
+import . "github.com/jrforrest/go-nicelife/pos"
+import . "github.com/jrforrest/go-nicelife/cell"
 
 func TestNeighbors(t *testing.T) {
 	sim := NewSimulation()

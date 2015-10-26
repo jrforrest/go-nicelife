@@ -1,7 +1,7 @@
 package gui
 
-import . "lifegame/pos"
-import . "lifegame/gui/cmd"
+import . "github.com/jrforrest/go-nicelife/pos"
+import . "github.com/jrforrest/go-nicelife/gui/cmd"
 
 type camera struct {
 	x           int

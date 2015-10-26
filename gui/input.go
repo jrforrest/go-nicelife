@@ -1,6 +1,6 @@
 package gui
 
-import . "lifegame/gui/cmd"
+import . "github.com/jrforrest/go-nicelife/gui/cmd"
 import "github.com/veandco/go-sdl2/sdl"
 
 func (gui *Gui) handleInput() {
