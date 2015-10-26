@@ -4,7 +4,7 @@ A simple Conway's Game of Life implementation intended as a golang code sample.
 
 ## About
 
-- Not bound to a grid size (though only a small section is rendered)
+- Not bound to a grid size
 - Game logic proceeds in goroutine separate from UI
 - Core game logic is tested
 
