@@ -61,11 +61,18 @@ func (cam *camera) zoom(dir Direction, dist int) {
 	}
 }
 
+func (cam *camera) cellVisibleQuad() quad {
+	cellW, cellH := cam.cellSizes()
+	return newQuad(cam.x/cellW, cam.y/cellH, cam.width/cellW, cam.height/cellH)
+}
+
 // A slice of the given positions that are within the camera bounds
 func (cam *camera) visiblePositions(positions []Position) []Position {
+	visQuad := cam.cellVisibleQuad()
+
 	visible := make([]Position, 0, cam.nCellsHoriz*cam.nCellsVert)
 	for _, pos := range positions {
-		if (pos.X >= 0 && pos.X < cam.nCellsHoriz) && (pos.Y >= 0 && pos.Y < cam.nCellsVert) {
+		if (visQuad.pointWithin(vec{x: pos.X, y: pos.Y})) {
 			visible = append(visible, pos)
 		}
 	}
