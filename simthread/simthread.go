@@ -34,7 +34,7 @@ func (thread *SimThread) start() {
 		select {
 		case move := <-thread.MoveIn:
 			thread.sim.SpawnCell(move.X, move.Y)
-		case <-time.After(10 * time.Second):
+		case <-time.After(500 * time.Millisecond):
 			thread.sim.Step()
 		case <-thread.HaltIn:
 			break
