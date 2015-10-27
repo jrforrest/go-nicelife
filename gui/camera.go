@@ -30,9 +30,9 @@ func (cam *camera) move(dir Direction, dist int) {
 
 	switch dir {
 	case UP:
-		cam.y += dist * cellHeight
-	case DOWN:
 		cam.y -= dist * cellHeight
+	case DOWN:
+		cam.y += dist * cellHeight
 	case LEFT:
 		cam.x -= dist * cellWidth
 	case RIGHT:
